@@ -19,8 +19,16 @@
         this.author = author;
         this.pages = pages;
         this.read = read;
+
+        this.id = crypto.randomUUID();
     }
-    
+
+    const myLibrary = [];
+
+    function addBookToLibrary(title, author, pages, read) {
+        let newBook = new Book(title, author, pages, read);
+        myLibrary.push(newBook);
+    }
   </script>
 </body>
 </html>
