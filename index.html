@@ -7,10 +7,29 @@
 </head>
 <body>
   <style>
+    #library {
+        width: 1000px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, 300px);
+        justify-self: center;
+        justify-content: center;
+        gap: 30px;
+    }
 
+    .book {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: 1px solid black;
+        width: 250px;
+    }
   </style>
 
+  <div id="library"></div>
+
   <script>
+    const library = document.querySelector("#library");
+
     function Book(title, author, pages, read) {
         if (!new.target) {
             throw Error("You must use the 'new' operator to call the constructor");
@@ -29,6 +48,40 @@
         let newBook = new Book(title, author, pages, read);
         myLibrary.push(newBook);
     }
+
+    function displayBooks() {
+        library.replaceChildren();
+
+        for(const book of myLibrary) {
+            const newBook = document.createElement("div");
+            newBook.classList.add("book");
+
+            const title = document.createElement("p");
+            title.textContent = `Title: ${book.title}`;
+            newBook.appendChild(title);
+
+            const author = document.createElement("p");
+            author.textContent = `Author: ${book.author}`;
+            newBook.appendChild(author);
+
+            const pages = document.createElement("p");
+            pages.textContent = `Pages: ${book.pages}`;
+            newBook.appendChild(pages);
+
+            const read = document.createElement("p");
+            read.textContent = `Read: ${book.read ? "Completed" : "Not completed"}`;
+            newBook.appendChild(read);
+
+            library.appendChild(newBook);
+        }
+    }
+
+    addBookToLibrary("Honey Bees", "great person", 75, false);
+    addBookToLibrary("Cookies", "great chef", 300, true);
+    addBookToLibrary("The Journey Home", "Radhanath Swami", 450, true);
+    addBookToLibrary("purpose", "anonymous", 1001, false);
+
+    displayBooks();
   </script>
 </body>
 </html>
