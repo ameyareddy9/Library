@@ -9,14 +9,19 @@
   <style>
     body {
         background-color:rgb(188, 118, 72);
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
     }
 
     #library {
         display: grid;
-        grid-template-columns: repeat(3, 200px);
-        justify-self: center;
+        align-self: center;
+        width: 1000px;
+        grid-template-columns: repeat(autofill, 200px);
         justify-content: center;
         gap: 30px;
+        grid-auto-flow: column;
     }
 
     .book {
@@ -25,9 +30,19 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        border: 1px solid black;
+        border: 5px solid rgb(59, 10, 10);
         justify-self: center;
         border-radius: 15px;
+    }
+
+    button {
+        align-self: center;
+        width: 100px; 
+        border: 1px solid rgb(0, 0, 0);
+        border-radius: 5px;
+        padding: 5px 10px;
+        background-color: rgb(65, 49, 29);
+        color: antiquewhite;
     }
   </style>
   
@@ -54,7 +69,7 @@
 
       <div>
         <button type="submit">Add</button>
-        <button>Cancel</button>
+        <button id="cancel" type="button">Cancel</button>
       </div>
       
     </form>
@@ -127,11 +142,16 @@
         const pagesInput = form.querySelector("#pages");
         const readInput = form.querySelector("#read");
 
-        addBookToLibrary(titleInput.value, authorInput.value, Number(pagesInput.value), readInput.checked ? true : false);
+        addBookToLibrary(titleInput.value, authorInput.value, Number(pagesInput.value), readInput.checked);
         displayBooks();
         dialog.close();
     });
 
+    form.querySelector("#cancel").addEventListener("click", () => {
+        dialog.close();
+    });
+
+    dialog.addEventListener("close", () => {form.reset()});
   </script>
 </body>
 </html>
