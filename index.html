@@ -36,17 +36,22 @@
 
     button {
         align-self: center;
-        width: 100px; 
+        width: 150px; 
         border: 1px solid rgb(0, 0, 0);
         border-radius: 5px;
-        padding: 5px 10px;
+        padding: 10px 10px;
         background-color: rgb(65, 49, 29);
         color: antiquewhite;
+        margin: 10px;
+    }
+
+    #newBook {
+        padding: 5px 10px;
         margin: 30px;
     }
   </style>
   
-  <button command="show-modal" commandfor="my-dialog">+ New Book</button>
+  <button command="show-modal" commandfor="my-dialog" id="newBook">+ New Book</button>
 
   <dialog id="my-dialog">
     <form id="book-form">
@@ -121,7 +126,7 @@
             newBook.appendChild(pages);
 
             const read = document.createElement("p");
-            read.textContent = `Read: ${book.read ? "Completed" : "Not completed"}`;
+            read.textContent = `Read status: ${book.read ? "Yes" : "No"}`;
             newBook.appendChild(read);
 
             const deleteBtn = document.createElement("button");
@@ -129,16 +134,33 @@
             deleteBtn.classList.add('discard');
             newBook.appendChild(deleteBtn);
 
+            const toggleStatus = document.createElement("button");
+            toggleStatus.textContent = `Change Status`;
+            toggleStatus.classList.add("toggle");
+            newBook.appendChild(toggleStatus);
+
             library.appendChild(newBook);
         }
     }
 
+    Book.prototype.toggleStatus = function() {
+        this.read = !this.read;
+    };
+
     library.addEventListener("click", event => {
         const curr = event.target;
-        if(!curr.classList.contains("discard")) return;
-        const bookId = curr.closest(".book").dataset.id;
-        myLibrary = myLibrary.filter(book => book.id !== bookId);
-        displayBooks();
+        if(curr.classList.contains("discard")) {
+            const bookId = curr.closest(".book").dataset.id;
+            myLibrary = myLibrary.filter(book => book.id !== bookId);
+            displayBooks();
+        }
+
+        else if(curr.classList.contains("toggle")) {
+            const bookId = curr.closest(".book").dataset.id;
+            const book = myLibrary.find(b => b.id === bookId);
+            book.toggleStatus();    
+            displayBooks();
+        }
     });
 
     addBookToLibrary("Honey Bees", "great person", 75, false);
