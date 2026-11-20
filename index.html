@@ -105,7 +105,8 @@
 
         for(const book of myLibrary) {
             const newBook = document.createElement("div");
-            newBook.classList.add("book");
+            newBook.classList.add("book");  
+            newBook.dataset.id = book.id;
 
             const title = document.createElement("p");
             title.textContent = `Title: ${book.title}`;
@@ -129,13 +130,16 @@
             newBook.appendChild(deleteBtn);
 
             library.appendChild(newBook);
-
-            deleteBtn.addEventListener("click", () => {
-                myLibrary = myLibrary.filter(b => b.id !== book.id);
-                displayBooks();
-            });
         }
     }
+
+    library.addEventListener("click", event => {
+        const curr = event.target;
+        if(!curr.classList.contains("discard")) return;
+        const bookId = curr.closest(".book").dataset.id;
+        myLibrary = myLibrary.filter(book => book.id !== bookId);
+        displayBooks();
+    });
 
     addBookToLibrary("Honey Bees", "great person", 75, false);
     addBookToLibrary("Cookies", "great chef", 300, true);
