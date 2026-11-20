@@ -11,17 +11,16 @@
         background-color:rgb(188, 118, 72);
         display: flex;
         flex-direction: column;
-        gap: 15px;
+        gap: 30px;
     }
 
     #library {
         display: grid;
         align-self: center;
-        width: 1000px;
-        grid-template-columns: repeat(autofill, 200px);
+        width: 800px;
+        grid-template-columns: repeat(auto-fill, 200px);
         justify-content: center;
         gap: 30px;
-        grid-auto-flow: column;
     }
 
     .book {
@@ -43,10 +42,11 @@
         padding: 5px 10px;
         background-color: rgb(65, 49, 29);
         color: antiquewhite;
+        margin: 30px;
     }
   </style>
   
-  <button command="show-modal" commandfor="my-dialog">New Book</button>
+  <button command="show-modal" commandfor="my-dialog">+ New Book</button>
 
   <dialog id="my-dialog">
     <form id="book-form">
@@ -93,7 +93,7 @@
         this.id = crypto.randomUUID();
     }
 
-    const myLibrary = [];
+    let myLibrary = [];
 
     function addBookToLibrary(title, author, pages, read) {
         let newBook = new Book(title, author, pages, read);
@@ -123,7 +123,17 @@
             read.textContent = `Read: ${book.read ? "Completed" : "Not completed"}`;
             newBook.appendChild(read);
 
+            const deleteBtn = document.createElement("button");
+            deleteBtn.textContent = `Discard`;
+            deleteBtn.classList.add('discard');
+            newBook.appendChild(deleteBtn);
+
             library.appendChild(newBook);
+
+            deleteBtn.addEventListener("click", () => {
+                myLibrary = myLibrary.filter(b => b.id !== book.id);
+                displayBooks();
+            });
         }
     }
 
